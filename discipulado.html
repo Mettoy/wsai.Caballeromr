@@ -11,16 +11,15 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f8ff; /* Azul claro */
+            background-color: #f0f8ff;
             color: #333;
         }
 
-        /* Barra de navegación */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #1e3a8a; /* Azul oscuro */
+            background-color: #1e3a8a;
             color: white;
             padding: 10px 20px;
         }
@@ -35,17 +34,16 @@
             font-weight: bold;
         }
 
-        /* Contenido */
         .content {
             padding: 20px;
         }
 
         h2 {
-            color: #1e3a8a; /* Azul oscuro */
+            color: #1e3a8a;
         }
 
         button {
-            background-color: #1e40af; /* Azul intermedio */
+            background-color: #1e40af;
             color: white;
             border: none;
             padding: 10px 15px;
@@ -55,7 +53,7 @@
         }
 
         button:hover {
-            background-color: #2563eb; /* Azul más claro */
+            background-color: #2563eb;
         }
 
         input[type="text"],
@@ -69,13 +67,12 @@
 
         input[type="text"]:focus,
         input[type="date"]:focus {
-            border-color: #2563eb; /* Azul */
+            border-color: #2563eb;
             outline: none;
         }
 
-        /* Formulario */
         .add-person-form {
-            background-color: #eff6ff; /* Azul claro */
+            background-color: #eff6ff;
             border: 1px solid #2563eb;
             border-radius: 10px;
             padding: 15px;
@@ -87,11 +84,11 @@
 
         .add-person-form input,
         .add-person-form button {
-            flex: 1 1 calc(33.33% - 20px); /* Tres columnas ajustables */
+            flex: 1 1 calc(33.33% - 20px);
         }
 
         .add-person-form button {
-            flex: 1 1 100%; /* Botón ocupa toda la fila */
+            flex: 1 1 100%;
             background-color: #1e40af;
             color: white;
         }
@@ -100,7 +97,6 @@
             background-color: #2563eb;
         }
 
-        /* Tabla */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -116,7 +112,7 @@
         }
 
         th {
-            background-color: #1e3a8a; /* Azul oscuro */
+            background-color: #1e3a8a;
             color: white;
         }
 
@@ -125,10 +121,9 @@
         }
 
         tr:hover {
-            background-color: #e0f2fe; /* Azul muy claro */
+            background-color: #e0f2fe;
         }
 
-        /* Buscador */
         #searchInput {
             width: 100%;
             padding: 10px;
@@ -140,6 +135,17 @@
         #searchInput:focus {
             border-color: #2563eb;
             outline: none;
+        }
+
+        .status-summary {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f3f4f6;
+            border-radius: 5px;
+        }
+
+        .status-summary span {
+            margin-right: 15px;
         }
     </style>
 </head>
@@ -154,7 +160,6 @@
     <div class="content">
         <h2>Discipulado</h2>
 
-        <!-- Formulario para agregar personas -->
         <div class="add-person-form">
             <input type="text" id="name" placeholder="Nombre" required>
             <input type="text" id="address" placeholder="Dirección" required>
@@ -165,10 +170,8 @@
             <button onclick="addPerson()">Agregar Persona</button>
         </div>
 
-        <!-- Buscador -->
         <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar por nombre...">
 
-        <!-- Tabla de discipulado -->
         <table id="discipuladoTable">
             <thead>
                 <tr>
@@ -186,12 +189,18 @@
                 <!-- Aquí se agregarán las filas de la tabla -->
             </tbody>
         </table>
+
+        <div class="status-summary">
+            <span id="pendienteCount">Pendientes: 0</span>
+            <span id="siCount">Finalizados: 0</span>
+            <span id="noCount">No Finalizados: 0</span>
+        </div>
+
+        <button onclick="saveInformation()">Guardar Información</button>
     </div>
 
     <script>
-        // Función para agregar una nueva persona a la tabla
         function addPerson() {
-            // Obtener los valores del formulario
             const name = document.getElementById("name").value;
             const address = document.getElementById("address").value;
             const phone = document.getElementById("phone").value;
@@ -199,7 +208,6 @@
             const comment = document.getElementById("comment").value;
             const date = document.getElementById("date").value;
 
-            // Crear una nueva fila en la tabla
             const table = document.getElementById("discipuladoTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
 
@@ -220,22 +228,29 @@
                 <td><button onclick="deleteRow(this)">Eliminar</button></td>
             `;
 
-            // Limpiar los campos del formulario
             document.getElementById("name").value = '';
             document.getElementById("address").value = '';
             document.getElementById("phone").value = '';
             document.getElementById("discipler").value = '';
             document.getElementById("comment").value = '';
             document.getElementById("date").value = '';
+
+            updateStatusCount();
         }
 
-        // Función para eliminar una fila
         function deleteRow(button) {
             const row = button.parentElement.parentElement;
             row.remove();
+            updateStatusCount();
         }
 
-        // Función para buscar en la tabla
+        function updateRowStatus(selectElement) {
+            const row = selectElement.parentElement.parentElement;
+            const status = selectElement.value;
+            row.style.backgroundColor = status === "si" ? "#86efac" : status === "no" ? "#fca5a5" : "#fde047";
+            updateStatusCount();
+        }
+
         function searchTable() {
             const input = document.getElementById("searchInput");
             const filter = input.value.toUpperCase();
@@ -251,11 +266,28 @@
             }
         }
 
-        // Función para actualizar el color de la fila según el estado
-        function updateRowStatus(selectElement) {
-            const row = selectElement.parentElement.parentElement;
-            const status = selectElement.value;
-            row.style.backgroundColor = status === "si" ? "#86efac" : status === "no" ? "#fca5a5" : "#fde047";
+        function updateStatusCount() {
+            const rows = document.getElementById("discipuladoTable").getElementsByTagName("tr");
+            let pendiente = 0, si = 0, no = 0;
+
+            for (let i = 1; i < rows.length; i++) {
+                const status = rows[i].getElementsByTagName("select")[0].value;
+                if (status === "pendiente") {
+                    pendiente++;
+                } else if (status === "si") {
+                    si++;
+                } else if (status === "no") {
+                    no++;
+                }
+            }
+
+            document.getElementById("pendienteCount").textContent = `Pendientes: ${pendiente}`;
+            document.getElementById("siCount").textContent = `Finalizados: ${si}`;
+            document.getElementById("noCount").textContent = `No Finalizados: ${no}`;
+        }
+
+        function saveInformation() {
+            alert("Información guardada.");
         }
     </script>
 
