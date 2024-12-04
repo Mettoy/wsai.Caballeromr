@@ -269,10 +269,48 @@
             alert("Aquí se mostrarán las estadísticas.");
         }
 
-        // Función para guardar la información (solo muestra un mensaje por ahora)
+        // Función para guardar la información
         function saveInformation() {
+            const rows = document.querySelectorAll("#visitacionTable tbody tr");
+            const data = [];
+
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName("td");
+                const rowData = [
+                    cells[0].textContent, // Nombre
+                    cells[1].textContent, // Dirección
+                    cells[2].textContent, // Teléfono
+                    cells[3].textContent, // Visitador
+                    cells[4].textContent  // Fecha
+                ];
+                data.push(rowData);
+            });
+
+            localStorage.setItem("visitacionData", JSON.stringify(data));
             alert("Información guardada correctamente.");
         }
+
+        // Función para cargar la información guardada
+        function loadInformation() {
+            const savedData = localStorage.getItem("visitacionData");
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                const table = document.getElementById("visitacionTable").getElementsByTagName('tbody')[0];
+
+                data.forEach(rowData => {
+                    const newRow = table.insertRow();
+                    rowData.forEach(cellData => {
+                        const newCell = newRow.insertCell();
+                        newCell.textContent = cellData;
+                    });
+                    const deleteCell = newRow.insertCell();
+                    deleteCell.innerHTML = '<button onclick="deleteRow(this)">Eliminar</button>';
+                });
+            }
+        }
+
+        // Cargar la información al inicio
+        loadInformation();
 
         // Función para abrir y cerrar el menú móvil
         function toggleMenu() {
