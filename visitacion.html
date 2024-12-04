@@ -5,11 +5,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visitación</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilo general */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .menu {
+            display: none;
+        }
+
+        .menu.active {
+            display: block;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h2 {
+            color: #1e40af;
+        }
+
+        button {
+            margin-right: 10px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1e3a8a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1e3a8a;
+            color: white;
+        }
+
+        td input {
+            width: 100%;
+            border: none;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        td input:focus {
+            outline: none;
+            border: 1px solid #2563eb;
+        }
+
+        #contador {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
-
     <!-- Barra de navegación -->
     <div class="navbar">
         <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
@@ -19,29 +102,17 @@
         </div>
     </div>
 
-    <!-- Menú desplegable -->
-    <div id="menu" class="menu">
-        <ul>
-            <li><a href="discipulado.html">Discipulado</a></li>
-            <li><a href="visitacion.html">Visitación</a></li>
-            <li><a href="asistencia-cultos.html">Asistencia Cultos</a></li>
-            <li><a href="asistencia-retiros.html">Asistencia Retiros</a></li>
-            <li><a href="actividades.html">Actividades</a></li>
-            <li><a href="directivo.html">Agregar Nuevo Directivo</a></li>
-        </ul>
-    </div>
-
     <!-- Contenido principal -->
     <div class="container">
         <h2>Registro de Visitación</h2>
 
-        <!-- Contenedor para los botones -->
+        <!-- Botones -->
         <div class="button-container">
             <button onclick="agregarFila()">Agregar Persona</button>
-            <button onclick="guardarInformacion()">Guardar Información</button>
+            <button onclick="actualizarEstadisticas()">Actualizar Estadísticas</button>
         </div>
 
-        <!-- Tabla de visitación -->
+        <!-- Tabla editable -->
         <table id="tabla-visitacion">
             <thead>
                 <tr>
@@ -64,32 +135,38 @@
                 </tr>
             </tbody>
         </table>
+
+        <!-- Contador -->
+        <div id="contador">Personas registradas: 1</div>
+
+        <!-- Tabla de estadísticas -->
+        <h3>Estadísticas de Visitas por Mes</h3>
+        <table id="tabla-estadisticas">
+            <thead>
+                <tr>
+                    <th>Mes</th>
+                    <th>Visitas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se llenarán los datos dinámicamente -->
+            </tbody>
+        </table>
     </div>
 
     <script>
-        // Recuperar el nombre de usuario desde localStorage
-        const username = localStorage.getItem('username');
-
-        // Verificar si el usuario está logueado
-        if (username) {
-            document.getElementById('username').textContent = username;
-        } else {
-            window.location.href = "inicio-sesion.html";
-        }
-
         // Función para mostrar/ocultar el menú
         function toggleMenu() {
             const menu = document.getElementById('menu');
             menu.classList.toggle('active');
         }
 
-        // Función para agregar una nueva fila a la tabla
+        // Función para agregar una fila nueva
         function agregarFila() {
             const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
             const nuevaFila = tabla.insertRow();
 
-            // Crear las celdas para la nueva fila
-            for (let i = 0; i < 6; i++) {  // Se cambia a 6 porque la columna 'Finalizó' fue eliminada
+            for (let i = 0; i < 6; i++) {
                 let nuevaCelda = nuevaFila.insertCell(i);
                 if (i === 5) {
                     nuevaCelda.innerHTML = `<input type="date">`;
@@ -97,10 +174,47 @@
                     nuevaCelda.innerHTML = `<input type="text" placeholder="Campo ${i + 1}">`;
                 }
             }
+
+            actualizarContador();
         }
 
-        // Función para guardar la información (aquí puedes guardar en localStorage o en una base de datos)
-        function guardarInformacion() {
-            alert("La información ha sido guardada.");
+        // Función para actualizar el contador
+        function actualizarContador() {
+            const filas = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0].rows.length;
+            document.getElementById('contador').textContent = `Personas registradas: ${filas}`;
+        }
+
+        // Función para actualizar estadísticas de visitas por mes
+        function actualizarEstadisticas() {
+            const filas = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0].rows;
+            const meses = {};
+
+            for (let i = 0; i < filas.length; i++) {
+                const fecha = filas[i].cells[5].querySelector('input').value;
+
+                if (fecha) {
+                    const mes = new Date(fecha).toLocaleString('es-ES', { month: 'long' });
+                    meses[mes] = (meses[mes] || 0) + 1;
+                }
+            }
+
+            const tablaEstadisticas = document.getElementById('tabla-estadisticas').getElementsByTagName('tbody')[0];
+            tablaEstadisticas.innerHTML = '';
+
+            for (const mes in meses) {
+                const fila = tablaEstadisticas.insertRow();
+                fila.innerHTML = `<td>${mes}</td><td>${meses[mes]}</td>`;
+            }
+        }
+
+        // Inicializar con nombre de usuario
+        const username = localStorage.getItem('username');
+        if (username) {
+            document.getElementById('username').textContent = username;
+        } else {
+            window.location.href = "inicio-sesion.html";
         }
     </script>
+</body>
+
+</html>
