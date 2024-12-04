@@ -190,5 +190,119 @@
         <!-- Tabla de discipulado -->
         <table id="discipuladoTable">
             <thead>
-   
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Discipulador</th>
+                    <th>Comentario</th>
+                    <th>Fecha</th>
+                    <th>Finalizó</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se agregarán las filas de la tabla -->
+            </tbody>
+        </table>
+
+        <div class="status-summary">
+            <span id="pendienteCount">Pendientes: 0</span>
+            <span id="siCount">Finalizados: 0</span>
+            <span id="noCount">No Finalizados: 0</span>
+        </div>
+
+    </div>
+
+    <script>
+        function addPerson() {
+            const name = document.getElementById("name").value;
+            const address = document.getElementById("address").value;
+            const phone = document.getElementById("phone").value;
+            const discipler = document.getElementById("discipler").value;
+            const comment = document.getElementById("comment").value;
+            const date = document.getElementById("date").value;
+
+            const table = document.getElementById("discipuladoTable").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>${address}</td>
+                <td>${phone}</td>
+                <td>${discipler}</td>
+                <td>${comment}</td>
+                <td>${date}</td>
+                <td>
+                    <select onchange="updateRowStatus(this)">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </td>
+                <td><button onclick="deleteRow(this)">Eliminar</button></td>
+            `;
+
+            document.getElementById("name").value = '';
+            document.getElementById("address").value = '';
+            document.getElementById("phone").value = '';
+            document.getElementById("discipler").value = '';
+            document.getElementById("comment").value = '';
+            document.getElementById("date").value = '';
+
+            updateStatusCount();
+        }
+
+        function deleteRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+            updateStatusCount();
+        }
+
+        function updateRowStatus(selectElement) {
+            const row = selectElement.parentElement.parentElement;
+            const status = selectElement.value;
+            row.style.backgroundColor = status === "si" ? "#86efac" : status === "no" ? "#fca5a5" : "#fde047";
+            updateStatusCount();
+        }
+
+        function searchTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("discipuladoTable");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    tr[i].style.display = txtValue.toUpperCase().includes(filter) ? '' : 'none';
+                }
+            }
+        }
+
+        function updateStatusCount() {
+            const rows = document.getElementById("discipuladoTable").getElementsByTagName('tr');
+            let pendiente = 0, si = 0, no = 0;
+
+            for (let i = 1; i < rows.length; i++) {
+                const status = rows[i].cells[6].getElementsByTagName('select')[0].value;
+                if (status === "pendiente") pendiente++;
+                if (status === "si") si++;
+                if (status === "no") no++;
+            }
+
+            document.getElementById("pendienteCount").textContent = `Pendientes: ${pendiente}`;
+            document.getElementById("siCount").textContent = `Finalizados: ${si}`;
+            document.getElementById("noCount").textContent = `No Finalizados: ${no}`;
+        }
+
+        function saveInformation() {
+            alert("Información guardada exitosamente.");
+        }
+    </script>
+
+</body>
+
+</html>
 
