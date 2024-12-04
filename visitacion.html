@@ -5,8 +5,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visitación</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
+        /* Estilos globales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fa;
+            color: #333;
+        }
+
+        /* Barra de navegación */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1e3a8a;
+            color: white;
+            padding: 15px 20px;
+        }
+
+        .menu-toggle {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .user-info {
+            font-size: 14px;
+        }
+
+        /* Menú desplegable */
+        .menu {
+            display: none;
+            background-color: #1e3a8a;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 200px;
+            padding: 10px 0;
+            border-radius: 5px;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu ul li a {
+            color: white;
+            padding: 12px 20px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .menu ul li a:hover {
+            background-color: #2563eb;
+        }
+
+        /* Contenedor de contenido */
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #1e3a8a;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
         /* Estilo de la tabla */
         table {
             width: 100%;
@@ -14,44 +91,86 @@
             margin-top: 20px;
         }
 
-        th, td {
-            padding: 10px;
+        th,
+        td {
+            padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
         }
 
         th {
             background-color: #f2f2f2;
+            color: #333;
         }
 
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #fafafa;
         }
 
-        /* Estilo para la barra de búsqueda */
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Barra de búsqueda */
         .search-bar {
-            margin-bottom: 20px;
             width: 100%;
-            padding: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
             font-size: 16px;
+            box-sizing: border-box;
         }
 
-        /* Estilo para los botones */
+        .search-bar:focus {
+            border-color: #2563eb;
+            outline: none;
+        }
+
+        /* Contenedor de botones */
         .button-container {
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
         }
 
         button {
-            padding: 10px 20px;
-            margin-right: 10px;
-            cursor: pointer;
-            background-color: #4CAF50;
+            padding: 12px 20px;
+            margin-left: 10px;
+            background-color: #2563eb;
             color: white;
             border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #1e40af;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            table,
+            .search-bar {
+                font-size: 14px;
+            }
+
+            button {
+                width: 100%;
+                margin-left: 0;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -88,170 +207,49 @@
 
         <!-- Contenedor para los botones -->
         <div class="button-container">
-            <button onclick="agregarFila()">Agregar Persona</button>
-            <button onclick="guardarInformacion()">Guardar Información</button>
+            <button>Agregar Visitación</button>
+            <button>Ver Estadísticas</button>
+            <button>Guardar Información</button>
         </div>
 
-        <!-- Filtro por mes -->
-        <label for="monthFilter">Filtrar por mes:</label>
-        <select id="monthFilter" onchange="filterByMonth()">
-            <option value="">Seleccionar mes</option>
-            <option value="01">Enero</option>
-            <option value="02">Febrero</option>
-            <option value="03">Marzo</option>
-            <option value="04">Abril</option>
-            <option value="05">Mayo</option>
-            <option value="06">Junio</option>
-            <option value="07">Julio</option>
-            <option value="08">Agosto</option>
-            <option value="09">Septiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>
-        </select>
-
-        <!-- Tabla de visitación -->
-        <table id="tabla-visitacion">
+        <!-- Tabla de Visitación -->
+        <table id="visitacionTable">
             <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Dirección</th>
                     <th>Teléfono</th>
-                    <th>Discipulador</th>
-                    <th>Comentarios</th>
+                    <th>Visitador</th>
                     <th>Fecha</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Las filas se agregarán dinámicamente aquí -->
+                <!-- Aquí se agregarán las filas dinámicamente -->
             </tbody>
         </table>
     </div>
 
     <script>
-        // Recuperar el nombre de usuario desde localStorage
-        const username = localStorage.getItem('username');
-
-        // Verificar si el usuario está logueado
-        if (username) {
-            document.getElementById('username').textContent = username;
-        } else {
-            window.location.href = "inicio-sesion.html";
-        }
-
-        // Función para mostrar/ocultar el menú
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('active');
-        }
-
-        // Función para agregar una nueva fila a la tabla
-        function agregarFila() {
-            const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
-            const nuevaFila = tabla.insertRow();
-
-            // Crear las celdas para la nueva fila
-            for (let i = 0; i < 6; i++) {
-                let nuevaCelda = nuevaFila.insertCell(i);
-                if (i === 5) {
-                    nuevaCelda.innerHTML = `<input type="date">`;
-                } else {
-                    nuevaCelda.innerHTML = `<input type="text" placeholder="Campo ${i + 1}">`;
-                }
-            }
-            guardarInformacion();
-        }
-
-        // Función para guardar la información en localStorage
-        function guardarInformacion() {
-            const tabla = document.getElementById('tabla-visitacion');
-            const filas = tabla.getElementsByTagName('tbody')[0].rows;
-            const datos = [];
-
-            for (let i = 0; i < filas.length; i++) {
-                const celdas = filas[i].getElementsByTagName('td');
-                const nombre = celdas[0].getElementsByTagName('input')[0].value;
-                const direccion = celdas[1].getElementsByTagName('input')[0].value;
-                const telefono = celdas[2].getElementsByTagName('input')[0].value;
-                const discipulador = celdas[3].getElementsByTagName('input')[0].value;
-                const comentarios = celdas[4].getElementsByTagName('input')[0].value;
-                const fecha = celdas[5].getElementsByTagName('input')[0].value;
-
-                datos.push({
-                    nombre,
-                    direccion,
-                    telefono,
-                    discipulador,
-                    comentarios,
-                    fecha
-                });
-            }
-
-            // Guardar en localStorage
-            localStorage.setItem('visitacionData', JSON.stringify(datos));
-            alert('La información ha sido guardada.');
-        }
-
-        // Función para filtrar la tabla por nombre
+        // Función para filtrar la tabla de acuerdo a la búsqueda
         function filterTable() {
-            const query = document.getElementById('searchBar').value.toLowerCase();
-            const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
-            const filas = tabla.getElementsByTagName('tr');
+            const searchTerm = document.getElementById("searchBar").value.toLowerCase();
+            const rows = document.querySelectorAll("#visitacionTable tbody tr");
 
-            for (let i = 0; i < filas.length; i++) {
-                const celdas = filas[i].getElementsByTagName('td');
-                const nombre = celdas[0].getElementsByTagName('input')[0].value.toLowerCase();
-                if (nombre.indexOf(query) > -1) {
-                    filas[i].style.display = "";
-                } else {
-                    filas[i].style.display = "none";
-                }
-            }
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName("td");
+                const name = cells[0].textContent.toLowerCase();
+                row.style.display = name.includes(searchTerm) ? "" : "none";
+            });
         }
 
-        // Función para filtrar por mes
-        function filterByMonth() {
-            const month = document.getElementById('monthFilter').value;
-            const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
-            const filas = tabla.getElementsByTagName('tr');
-
-            for (let i = 0; i < filas.length; i++) {
-                const celdas = filas[i].getElementsByTagName('td');
-                const fecha = celdas[5].getElementsByTagName('input')[0].value;
-
-                if (fecha.startsWith(month)) {
-                    filas[i].style.display = "";
-                } else {
-                    filas[i].style.display = "none";
-                }
-            }
-        }
-
-        // Cargar los datos guardados desde localStorage cuando la página se carga
-        window.onload = function () {
-            const datosGuardados = JSON.parse(localStorage.getItem('visitacionData'));
-            if (datosGuardados) {
-                const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
-
-                // Cargar cada fila guardada
-                datosGuardados.forEach(dato => {
-                    const nuevaFila = tabla.insertRow();
-                    for (let i = 0; i < 6; i++) {                        let nuevaCelda = nuevaFila.insertCell(i);
-                        if (i === 5) {
-                            nuevaCelda.innerHTML = `<input type="date" value="${dato.fecha}">`;
-                        } else {
-                            nuevaCelda.innerHTML = `<input type="text" value="${dato[i === 0 ? 'nombre' : 
-                              i === 1 ? 'direccion' : 
-                              i === 2 ? 'telefono' : 
-                              i === 3 ? 'discipulador' : 'comentarios']}">`;
-                        }
-                    }
-                });
-            }
+        // Función para abrir y cerrar el menú móvil
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
         }
     </script>
+
 </body>
 
 </html>
-
-                       
