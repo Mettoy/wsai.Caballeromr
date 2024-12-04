@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #003366;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #003366;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Usuarios Registrados</h1>
+
+    <!-- Tabla de usuarios -->
+    <table>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Acceso</th>
+            </tr>
+        </thead>
+        <tbody id="userTable">
+            <!-- Los usuarios registrados se mostrarán aquí -->
+        </tbody>
+    </table>
+
+    <script>
+        // Cargar usuarios desde localStorage
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Renderizar la tabla de usuarios
+        function renderTable() {
+            const tableBody = document.getElementById("userTable");
+            tableBody.innerHTML = "";
+
+            if (users.length === 0) {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td colspan="4" style="text-align:center;">No hay usuarios registrados.</td>`;
+                tableBody.appendChild(row);
+                return;
+            }
+
+            users.forEach(user => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.name}</td>
+                    <td>${user.role}</td>
+                    <td>${user.access.join(", ")}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Inicializar tabla al cargar la página
+        renderTable();
+    </script>
+</body>
+
+</html>
