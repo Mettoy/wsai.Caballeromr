@@ -4,261 +4,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discipulado</title>
+    <title>Inicio</title>
     <style>
-        /* Estilo general */
+        /* Estilos generales */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f8ff; /* Azul claro */
-            color: #333;
+            background-color: #f9f9f9;
         }
 
-        /* Barra de navegación */
         .navbar {
+            background-color: #003366;
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #1e3a8a; /* Azul oscuro */
-            color: white;
             padding: 10px 20px;
         }
 
         .menu-toggle {
+            font-size: 24px;
             cursor: pointer;
-            font-size: 20px;
+            color: white;
         }
 
         .logo {
             font-size: 20px;
-            font-weight: bold;
         }
 
-        /* Contenido */
-        .content {
-            padding: 20px;
-        }
-
-        h2 {
-            color: #1e3a8a; /* Azul oscuro */
-        }
-
-        button {
-            background-color: #1e40af; /* Azul intermedio */
+        .menu {
+            display: none;
+            background-color: #003366;
             color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        button:hover {
-            background-color: #2563eb; /* Azul más claro */
-        }
-
-        input[type="text"],
-        input[type="date"] {
-            padding: 8px;
-            border: 1px solid #d1d5db;
-            border-radius: 5px;
-            margin: 5px 0;
-            width: calc(100% - 20px);
-        }
-
-        input[type="text"]:focus,
-        input[type="date"]:focus {
-            border-color: #2563eb; /* Azul */
-            outline: none;
-        }
-
-        /* Formulario */
-        .add-person-form {
-            background-color: #eff6ff; /* Azul claro */
-            border: 1px solid #2563eb;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .add-person-form input,
-        .add-person-form button {
-            flex: 1 1 calc(33.33% - 20px); /* Tres columnas ajustables */
-        }
-
-        .add-person-form button {
-            flex: 1 1 100%; /* Botón ocupa toda la fila */
-            background-color: #1e40af;
-            color: white;
-        }
-
-        .add-person-form button:hover {
-            background-color: #2563eb;
-        }
-
-        /* Tabla */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            background-color: white;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 10px;
-            border: 1px solid #e5e7eb;
-        }
-
-        th {
-            background-color: #1e3a8a; /* Azul oscuro */
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9fafb;
-        }
-
-        tr:hover {
-            background-color: #e0f2fe; /* Azul muy claro */
-        }
-
-        /* Buscador */
-        #searchInput {
+            position: absolute;
+            top: 50px;
+            left: 0;
             width: 100%;
             padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 5px;
-            margin-bottom: 20px;
         }
 
-        #searchInput:focus {
-            border-color: #2563eb;
-            outline: none;
+        .menu.active {
+            display: block;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu ul li {
+            padding: 10px 0;
+        }
+
+        .menu ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .menu ul li a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-
+    <!-- Barra de navegación -->
     <div class="navbar">
         <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
-        <div class="logo">Sistema único caballeros</div>
+        <div class="logo">Sistema Unificado</div>
+        <div class="user-info">
+            <span id="usernameDisplay"></span>
+        </div>
     </div>
 
-    <div class="content">
-        <h2>Discipulado</h2>
-
-        <!-- Formulario para agregar personas -->
-        <div class="add-person-form">
-            <input type="text" id="name" placeholder="Nombre" required>
-            <input type="text" id="address" placeholder="Dirección" required>
-            <input type="text" id="phone" placeholder="Teléfono" required>
-            <input type="text" id="discipler" placeholder="Discipulador" required>
-            <input type="text" id="comment" placeholder="Comentario" required>
-            <input type="date" id="date" required>
-            <button onclick="addPerson()">Agregar Persona</button>
-        </div>
-
-        <!-- Buscador -->
-        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar por nombre...">
-
-        <!-- Tabla de discipulado -->
-        <table id="discipuladoTable">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Discipulador</th>
-                    <th>Comentario</th>
-                    <th>Fecha</th>
-                    <th>Finalizó</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Aquí se agregarán las filas de la tabla -->
-            </tbody>
-        </table>
+    <!-- Menú desplegable -->
+    <div id="menu" class="menu">
+        <ul id="menuItems">
+            <!-- Las opciones se generarán dinámicamente -->
+        </ul>
     </div>
 
     <script>
-        // Función para agregar una nueva persona a la tabla
-        function addPerson() {
-            // Obtener los valores del formulario
-            const name = document.getElementById("name").value;
-            const address = document.getElementById("address").value;
-            const phone = document.getElementById("phone").value;
-            const discipler = document.getElementById("discipler").value;
-            const comment = document.getElementById("comment").value;
-            const date = document.getElementById("date").value;
+        // Usuarios con acceso completo
+        const fullAccessUsers = [
+            "tesoreromr", 
+            "secretariomr", 
+            "asesormr",
+            "presidentemr",
+            "vicepresidentemr"
+        ];
 
-            // Crear una nueva fila en la tabla
-            const table = document.getElementById("discipuladoTable").getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
+        const menuOptions = {
+            general: [
+                
+            { name: "Discipulado", link: "discipulado.html" },
+            { name: "Cultos", link: "asistencia.html" },
+            { name: "Discipulado", link: "discipulado.html" },
+                { name: "Visitación", link: "visitacion.html" },
+            ],
+            fullAccess: [
+                
+                { name: "Nuevos Usuarios", link: "nuevos-usuarios.html" },
+                { name: "Administrar Roles", link: "admi-roles.html" },
+                { name: "Ver Reportes", link: "ver-reportes.html" },
+            ]
+        };
 
-            newRow.innerHTML = `
-                <td>${name}</td>
-                <td>${address}</td>
-                <td>${phone}</td>
-                <td>${discipler}</td>
-                <td>${comment}</td>
-                <td>${date}</td>
-                <td>
-                    <select onchange="updateRowStatus(this)">
-                        <option value="pendiente">Pendiente</option>
-                        <option value="si">Sí</option>
-                        <option value="no">No</option>
-                    </select>
-                </td>
-                <td><button onclick="deleteRow(this)">Eliminar</button></td>
-            `;
+        // Recuperar el nombre de usuario desde localStorage
+        const username = localStorage.getItem("username");
 
-            // Limpiar los campos del formulario
-            document.getElementById("name").value = '';
-            document.getElementById("address").value = '';
-            document.getElementById("phone").value = '';
-            document.getElementById("discipler").value = '';
-            document.getElementById("comment").value = '';
-            document.getElementById("date").value = '';
+        // Actualizar el nombre del usuario en pantalla
+        if (username) {
+            document.getElementById("usernameDisplay").textContent = `Bienvenido, ${username}`;
+        } else {
+            window.location.href = "inicio-sesion.html";
         }
 
-        // Función para eliminar una fila
-        function deleteRow(button) {
-            const row = button.parentElement.parentElement;
-            row.remove();
-        }
+        // Generar el menú dinámicamente
+        function generateMenu() {
+            const menuItems = document.getElementById("menuItems");
 
-        // Función para buscar en la tabla
-        function searchTable() {
-            const input = document.getElementById("searchInput");
-            const filter = input.value.toUpperCase();
-            const table = document.getElementById("discipuladoTable");
-            const tr = table.getElementsByTagName("tr");
+            // Agregar opciones generales
+            menuOptions.general.forEach((option) => {
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="${option.link}">${option.name}</a>`;
+                menuItems.appendChild(li);
+            });
 
-            for (let i = 1; i < tr.length; i++) {
-                const td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    const txtValue = td.textContent || td.innerText;
-                    tr[i].style.display = txtValue.toUpperCase().includes(filter) ? '' : 'none';
-                }
+            // Agregar opciones completas si el usuario tiene acceso total
+            if (fullAccessUsers.includes(username)) {
+                menuOptions.fullAccess.forEach((option) => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `<a href="${option.link}">${option.name}</a>`;
+                    menuItems.appendChild(li);
+                });
             }
         }
 
-        // Función para actualizar el color de la fila según el estado
-        function updateRowStatus(selectElement) {
-            const row = selectElement.parentElement.parentElement;
-            const status = selectElement.value;
-            row.style.backgroundColor = status === "si" ? "#86efac" : status === "no" ? "#fca5a5" : "#fde047";
+        // Mostrar/ocultar el menú
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            menu.classList.toggle("active");
         }
-    </script>
 
+        // Generar el menú al cargar la página
+        generateMenu();
+    </script>
 </body>
 
 </html>
