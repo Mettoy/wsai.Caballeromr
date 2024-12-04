@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitación</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Barra de navegación -->
+    <div class="navbar">
+        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+        <div class="logo">Sistema único caballeros</div>
+        <div class="user-info">
+            <span>Bienvenido, <span id="username"></span></span>
+        </div>
+    </div>
+
+    <!-- Menú desplegable -->
+    <div id="menu" class="menu">
+        <ul>
+            <li><a href="discipulado.html">Discipulado</a></li>
+            <li><a href="visitacion.html">Visitación</a></li>
+            <li><a href="asistencia-cultos.html">Asistencia Cultos</a></li>
+            <li><a href="asistencia-retiros.html">Asistencia Retiros</a></li>
+            <li><a href="actividades.html">Actividades</a></li>
+            <li><a href="directivo.html">Agregar Nuevo Directivo</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <h2>Registro de Visitación</h2>
+
+        <!-- Contenedor para los botones -->
+        <div class="button-container">
+            <button onclick="agregarFila()">Agregar Persona</button>
+            <button onclick="guardarInformacion()">Guardar Información</button>
+        </div>
+
+        <!-- Tabla de visitación -->
+        <table id="tabla-visitacion">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Discipulador</th>
+                    <th>Comentarios</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" placeholder="Nombre"></td>
+                    <td><input type="text" placeholder="Dirección"></td>
+                    <td><input type="text" placeholder="Teléfono"></td>
+                    <td><input type="text" placeholder="Discipulador"></td>
+                    <td><input type="text" placeholder="Comentarios"></td>
+                    <td><input type="date"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Recuperar el nombre de usuario desde localStorage
+        const username = localStorage.getItem('username');
+
+        // Verificar si el usuario está logueado
+        if (username) {
+            document.getElementById('username').textContent = username;
+        } else {
+            window.location.href = "inicio-sesion.html";
+        }
+
+        // Función para mostrar/ocultar el menú
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('active');
+        }
+
+        // Función para agregar una nueva fila a la tabla
+        function agregarFila() {
+            const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
+            const nuevaFila = tabla.insertRow();
+
+            // Crear las celdas para la nueva fila
+            for (let i = 0; i < 6; i++) {  // Se cambia a 6 porque la columna 'Finalizó' fue eliminada
+                let nuevaCelda = nuevaFila.insertCell(i);
+                if (i === 5) {
+                    nuevaCelda.innerHTML = `<input type="date">`;
+                } else {
+                    nuevaCelda.innerHTML = `<input type="text" placeholder="Campo ${i + 1}">`;
+                }
+            }
+        }
+
+        // Función para guardar la información (aquí puedes guardar en localStorage o en una base de datos)
+        function guardarInformacion() {
+            alert("La información ha sido guardada.");
+        }
+    </script>
