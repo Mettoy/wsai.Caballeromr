@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discipulado</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilo general */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Azul claro */
+            color: #333;
+        }
+
+        /* Barra de navegación */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1e3a8a; /* Azul oscuro */
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .menu-toggle {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Contenido */
+        .content {
+            padding: 20px;
+        }
+
+        h2 {
+            color: #1e3a8a; /* Azul oscuro */
+        }
+
+        button {
+            background-color: #1e40af; /* Azul intermedio */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #2563eb; /* Azul más claro */
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            margin: 5px 0;
+            width: calc(100% - 22px);
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            border-color: #2563eb; /* Azul */
+            outline: none;
+        }
+
+        /* Tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        th {
+            background-color: #1e3a8a; /* Azul oscuro */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tr:hover {
+            background-color: #e0f2fe; /* Azul muy claro */
+        }
+
+        /* Formulario plegable */
+        .add-person-form {
+            display: none;
+            background-color: #eff6ff; /* Azul claro */
+            border: 1px solid #2563eb;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Colores según estado */
+        .yellow {
+            background-color: #fde047; /* Amarillo */
+        }
+
+        .green {
+            background-color: #86efac; /* Verde */
+        }
+
+        .red {
+            background-color: #fca5a5; /* Rojo */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+        <div class="logo">Sistema único caballeros</div>
+    </div>
+
+    <div class="content">
+        <h2>Discipulado</h2>
+
+        <!-- Cantidad de personas registradas -->
+        <p>Total de personas registradas: <span id="personCount">0</span></p>
+
+        <!-- Botón para alternar el formulario plegable -->
+        <button onclick="toggleForm()">Agregar Persona</button>
+
+        <!-- Formulario para agregar personas -->
+        <div class="add-person-form" id="addPersonFormContainer">
+            <h3>Agregar Persona</h3>
+            <form id="addPersonForm">
+                <input type="text" id="name" placeholder="Nombre" required>
+                <input type="text" id="address" placeholder="Dirección" required>
+                <input type="text" id="phone" placeholder="Teléfono" required>
+                <input type="text" id="discipler" placeholder="Discipulador" required>
+                <input type="text" id="comment" placeholder="Comentario" required>
+                <input type="date" id="date" required>
+                <button type="submit">Agregar Persona</button>
+            </form>
+        </div>
+
+        <!-- Buscador -->
+        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar por nombre...">
+
+        <!-- Tabla de discipulado -->
+        <table id="discipuladoTable">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Discipulador</th>
+                    <th>Comentario</th>
+                    <th>Fecha</th>
+                    <th>Finalizó</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se agregarán las filas de la tabla -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Funciones JS (sin cambios)
+        /* ... Código JavaScript existente ... */
+    </script>
+
+</body>
+
+</html>
