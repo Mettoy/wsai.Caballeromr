@@ -4,30 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visitación</title>
+    <title>Asistencia de Cultos</title>
     <style>
-        /* Estilo general */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f8fafc;
+            background-color: #f4f4f9;
             color: #333;
         }
 
         .navbar {
             background-color: #1e3a8a;
             color: white;
-            padding: 10px;
+            padding: 15px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .menu-toggle {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
         }
 
         .menu {
-            display: block;
+            display: none;
             background-color: #1e3a8a;
-            color: white;
             padding: 10px;
+        }
+
+        .menu.active {
+            display: block;
         }
 
         .menu ul {
@@ -37,7 +49,7 @@
         }
 
         .menu ul li {
-            padding: 5px 0;
+            padding: 10px 0;
         }
 
         .menu ul li a {
@@ -47,40 +59,47 @@
 
         .container {
             padding: 20px;
+            max-width: 1200px;
+            margin: auto;
         }
 
         h2 {
-            color: #1e40af;
+            color: #1e3a8a;
+            text-align: center;
         }
 
-        button {
-            margin-right: 10px;
-            background-color: #2563eb;
-            color: white;
+        .buttons {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            margin: 5px;
             border: none;
-            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
+            color: white;
+            font-size: 16px;
         }
 
-        button:hover {
-            background-color: #1e3a8a;
+        .add-button {
+            background-color: #4caf50;
+        }
+
+        .save-button {
+            background-color: #f44336;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        table,
-        th,
-        td {
+        th, td {
             border: 1px solid #ddd;
-        }
-
-        th,
-        td {
             padding: 10px;
             text-align: left;
         }
@@ -90,166 +109,131 @@
             color: white;
         }
 
-        td input {
-            width: 100%;
-            border: none;
-            padding: 5px;
-            box-sizing: border-box;
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
 
-        td input:focus {
-            outline: none;
-            border: 1px solid #2563eb;
-        }
-
-        #contador {
-            margin-top: 10px;
-            font-weight: bold;
+        tr:hover {
+            background-color: #f1f1f1;
         }
     </style>
 </head>
 
 <body>
-    <!-- Barra de navegación -->
     <div class="navbar">
+        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
         <div class="logo">Sistema único caballeros</div>
-        <div class="user-info">
-            <span>Bienvenido, <span id="username"></span></span>
-        </div>
+        <div class="user-info">Bienvenido, <span id="username"></span></div>
     </div>
 
-    <!-- Menú -->
-    <div class="menu">
+    <div id="menu" class="menu">
         <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Discipulado</a></li>
-            <li><a href="#">Cultos</a></li>
-            <li><a href="#">Visitación</a></li>
+            <li><a href="discipulado.html">Discipulado</a></li>
+            <li><a href="visitacion.html">Visitación</a></li>
+            <li><a href="asistencia.html">Asistencia Cultos</a></li>
         </ul>
     </div>
 
-    <!-- Contenido principal -->
     <div class="container">
-        <h2>Registro de Visitación</h2>
+        <h2>Asistencia de Cultos</h2>
 
-        <!-- Botones -->
-        <div class="button-container">
-            <button onclick="agregarFila()">Agregar Persona</button>
-            <button onclick="actualizarEstadisticas()">Actualizar Estadísticas</button>
+        <div class="buttons">
+            <button class="add-button" onclick="addRow()">Añadir Actividad</button>
         </div>
 
-        <!-- Tabla editable -->
-        <table id="tabla-visitacion">
+        <table id="activitiesTable">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Discipulador</th>
-                    <th>Comentarios</th>
+                    <th>Actividad</th>
                     <th>Fecha</th>
+                    <th>Responsable</th>
+                    <th>Asistencia%</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Las filas se cargarán dinámicamente -->
-            </tbody>
+            <tbody></tbody>
         </table>
 
-        <!-- Contador -->
-        <div id="contador">Personas registradas: 0</div>
-
-        <!-- Tabla de estadísticas -->
-        <h3>Estadísticas de Visitas por Mes</h3>
-        <table id="tabla-estadisticas">
+        <h3>Estadísticas</h3>
+        <table id="statisticsTable">
             <thead>
                 <tr>
-                    <th>Mes</th>
-                    <th>Visitas</th>
+                    <th>Total de Actividades</th>
+                    <th>Promedio de Asistencia%</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Aquí se llenarán los datos dinámicamente -->
+                <tr>
+                    <td id="totalActivities">0</td>
+                    <td id="averageAttendance">0</td>
+                </tr>
             </tbody>
         </table>
     </div>
 
     <script>
-        // Función para cargar datos guardados
-        function cargarDatos() {
-            const datosGuardados = JSON.parse(localStorage.getItem('visitacionDatos')) || [];
-            const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
+        const username = localStorage.getItem('username') || "Usuario";
+        document.getElementById('username').textContent = username;
 
-            datosGuardados.forEach(fila => {
-                const nuevaFila = tabla.insertRow();
-                fila.forEach(celda => {
-                    const nuevaCelda = nuevaFila.insertCell();
-                    if (nuevaCelda.cellIndex === 5) {
-                        nuevaCelda.innerHTML = `<input type="date" value="${celda}">`;
-                    } else {
-                        nuevaCelda.innerHTML = `<input type="text" value="${celda}">`;
-                    }
-                });
+        function toggleMenu() {
+            document.getElementById('menu').classList.toggle('active');
+        }
+
+        function addRow() {
+            const table = document.getElementById("activitiesTable").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td><input type="text" placeholder="Nombre de la actividad"></td>
+                <td><input type="date"></td>
+                <td><input type="text" placeholder="Responsable"></td>
+                <td><input type="number" placeholder="%" min="0" max="100"></td>
+                <td><button onclick="deleteRow(this)">Eliminar</button></td>
+            `;
+            saveInformation();
+        }
+
+        function deleteRow(button) {
+            button.closest('tr').remove();
+            saveInformation();
+        }
+
+        function saveInformation() {
+            const rows = document.querySelectorAll("#activitiesTable tbody tr");
+            const data = Array.from(rows).map(row => ({
+                activity: row.cells[0].querySelector('input').value,
+                date: row.cells[1].querySelector('input').value,
+                responsible: row.cells[2].querySelector('input').value,
+                attendance: row.cells[3].querySelector('input').value,
+            }));
+            localStorage.setItem("activities", JSON.stringify(data));
+            updateStatistics(data);
+        }
+
+        function updateStatistics(data) {
+            const total = data.length;
+            const average =
+                total > 0
+                    ? data.reduce((sum, item) => sum + (parseFloat(item.attendance) || 0), 0) / total
+                    : 0;
+            document.getElementById("totalActivities").textContent = total;
+            document.getElementById("averageAttendance").textContent = average.toFixed(2);
+        }
+
+        window.onload = function () {
+            const savedData = JSON.parse(localStorage.getItem("activities")) || [];
+            const table = document.getElementById("activitiesTable").getElementsByTagName('tbody')[0];
+            savedData.forEach(item => {
+                const newRow = table.insertRow();
+                newRow.innerHTML = `
+                    <td><input type="text" value="${item.activity}" /></td>
+                    <td><input type="date" value="${item.date}" /></td>
+                    <td><input type="text" value="${item.responsible}" /></td>
+                    <td><input type="number" value="${item.attendance}" min="0" max="100" /></td>
+                    <td><button onclick="deleteRow(this)">Eliminar</button></td>
+                `;
             });
-
-            actualizarContador();
-        }
-
-        // Función para guardar datos automáticamente
-        function guardarDatos() {
-            const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
-            const filas = Array.from(tabla.rows).map(fila => Array.from(fila.cells).map(celda => celda.querySelector('input').value));
-            localStorage.setItem('visitacionDatos', JSON.stringify(filas));
-        }
-
-        // Función para agregar una fila nueva
-        function agregarFila() {
-            const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
-            const nuevaFila = tabla.insertRow();
-
-            for (let i = 0; i < 6; i++) {
-                let nuevaCelda = nuevaFila.insertCell(i);
-                if (i === 5) {
-                    nuevaCelda.innerHTML = `<input type="date" onchange="guardarDatos()">`;
-                } else {
-                    nuevaCelda.innerHTML = `<input type="text" oninput="guardarDatos()">`;
-                }
-            }
-
-            actualizarContador();
-            guardarDatos();
-        }
-
-        // Función para actualizar el contador
-        function actualizarContador() {
-            const filas = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0].rows.length;
-            document.getElementById('contador').textContent = `Personas registradas: ${filas}`;
-        }
-
-        // Función para actualizar estadísticas de visitas por mes
-        function actualizarEstadisticas() {
-            const filas = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0].rows;
-            const meses = {};
-
-            for (let i = 0; i < filas.length; i++) {
-                const fecha = filas[i].cells[5].querySelector('input').value;
-
-                if (fecha) {
-                    const mes = new Date(fecha).toLocaleString('es-ES', { month: 'long' });
-                    meses[mes] = (meses[mes] || 0) + 1;
-                }
-            }
-
-            const tablaEstadisticas = document.getElementById('tabla-estadisticas').getElementsByTagName('tbody')[0];
-            tablaEstadisticas.innerHTML = '';
-
-            for (const mes in meses) {
-                const fila = tablaEstadisticas.insertRow();
-                fila.innerHTML = `<td>${mes}</td><td>${meses[mes]}</td>`;
-            }
-        }
-
-        // Inicializar con datos cargados
-        cargarDatos();
+            updateStatistics(savedData);
+        };
     </script>
 </body>
 
