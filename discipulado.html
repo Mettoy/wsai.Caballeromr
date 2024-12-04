@@ -97,6 +97,7 @@
             background-color: #2563eb;
         }
 
+        /* Estilo de la tabla */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -169,7 +170,10 @@
     <div class="content">
         <h2>Discipulado</h2>
 
-        <!-- Tabla de discipulado y Botón de guardar en la parte superior -->
+        <!-- Barra de búsqueda -->
+        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar por nombre...">
+
+        <!-- Tabla de discipulado -->
         <table id="discipuladoTable">
             <thead>
                 <tr>
@@ -207,7 +211,6 @@
             <button onclick="addPerson()">Agregar Persona</button>
         </div>
 
-        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar por nombre...">
     </div>
 
     <script>
@@ -276,7 +279,6 @@
                 }
             }
         }
-
         function updateStatusCount() {
             const rows = document.getElementById("discipuladoTable").getElementsByTagName("tr");
             let pendiente = 0, si = 0, no = 0;
@@ -299,6 +301,10 @@
 
         function saveInformation() {
             alert("Información guardada");
+        }
+
+        function toggleMenu() {
+            // Esta función puede ser utilizada para mostrar u ocultar el menú si es necesario
         }
     </script>
 
