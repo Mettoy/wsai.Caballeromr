@@ -137,16 +137,20 @@
         button {
             padding: 12px 20px;
             margin-left: 10px;
-            background-color: #2563eb;
-            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
         }
 
-        button:hover {
-            background-color: #1e40af;
+        /* Botón "Guardar" rojo */
+        button#saveButton {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        button#saveButton:hover {
+            background-color: #b91c1c;
         }
 
         /* Responsividad */
@@ -209,7 +213,7 @@
         <div class="button-container">
             <button onclick="addVisitacion()">Agregar Visitación</button>
             <button onclick="viewStatistics()">Ver Estadísticas</button>
-            <button onclick="saveInformation()">Guardar Información</button>
+            <button id="saveButton" onclick="saveInformation()">Guardar Información</button>
         </div>
 
         <!-- Tabla de Visitación -->
@@ -293,34 +297,4 @@
 
         // Función para cargar la información desde localStorage
         function loadInformation() {
-            const savedData = localStorage.getItem("visitacionData");
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                const table = document.getElementById("visitacionTable").getElementsByTagName('tbody')[0];
-
-                data.forEach(rowData => {
-                    const newRow = table.insertRow();
-                    rowData.forEach(cellData => {
-                        const newCell = newRow.insertCell();
-                        newCell.textContent = cellData;
-                    });
-                    const deleteCell = newRow.insertCell();
-                    deleteCell.innerHTML = '<button onclick="deleteRow(this)">Eliminar</button>';
-                });
-            }
-        }
-
-        // Cargar la información al inicio
-        loadInformation();
-
-        // Función para abrir y cerrar el menú móvil
-        function toggleMenu() {
-            const menu = document.getElementById("menu");
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
-        }
-    </script>
-
-</body>
-
-</html>
-
+            const savedData =
