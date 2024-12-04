@@ -286,11 +286,12 @@
                 data.push(rowData);
             });
 
+            // Guardamos los datos en localStorage
             localStorage.setItem("visitacionData", JSON.stringify(data));
             alert("Información guardada correctamente.");
         }
 
-        // Función para cargar la información guardada
+        // Función para cargar la información desde localStorage
         function loadInformation() {
             const savedData = localStorage.getItem("visitacionData");
             if (savedData) {
