@@ -130,26 +130,31 @@
         /* Contenedor de botones */
         .button-container {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center; /* Centra los botones */
             margin-top: 20px;
         }
 
         button {
             padding: 12px 20px;
             margin-left: 10px;
+            background-color: #2563eb;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
         }
 
-        /* Botón "Guardar" rojo */
-        button#saveButton {
-            background-color: #dc2626;
-            color: white;
+        button:hover {
+            background-color: #1e40af;
         }
 
-        button#saveButton:hover {
+        /* Botón guardar rojo */
+        .save-button {
+            background-color: #dc2626;
+        }
+
+        .save-button:hover {
             background-color: #b91c1c;
         }
 
@@ -213,7 +218,7 @@
         <div class="button-container">
             <button onclick="addVisitacion()">Agregar Visitación</button>
             <button onclick="viewStatistics()">Ver Estadísticas</button>
-            <button id="saveButton" onclick="saveInformation()">Guardar Información</button>
+            <button class="save-button" onclick="saveInformation()">Guardar Información</button>
         </div>
 
         <!-- Tabla de Visitación -->
@@ -253,11 +258,11 @@
             const newRow = table.insertRow();
 
             newRow.innerHTML = `
-                <td contenteditable="true">Juan Pérez</td>
-                <td contenteditable="true">Calle Falsa 123</td>
-                <td contenteditable="true">123-456-789</td>
-                <td contenteditable="true">Pedro Sánchez</td>
-                <td contenteditable="true">2024-12-04</td>
+                <td>Juan Pérez</td>
+                <td>Calle Falsa 123</td>
+                <td>123-456-789</td>
+                <td>Pedro Sánchez</td>
+                <td>2024-12-04</td>
                 <td><button onclick="deleteRow(this)">Eliminar</button></td>
             `;
         }
@@ -273,28 +278,58 @@
             alert("Aquí se mostrarán las estadísticas.");
         }
 
-        // Función para guardar la información
+        // Función para guardar la información (guarda la tabla en localStorage)
         function saveInformation() {
-            const rows = document.querySelectorAll("#visitacionTable tbody tr");
+            const table = document.getElementById("visitacionTable").getElementsByTagName('tbody')[0];
+            const rows = table.getElementsByTagName("tr");
             const data = [];
 
-            rows.forEach(row => {
+            for (let row of rows) {
                 const cells = row.getElementsByTagName("td");
                 const rowData = [
-                    cells[0].textContent, // Nombre
-                    cells[1].textContent, // Dirección
-                    cells[2].textContent, // Teléfono
-                    cells[3].textContent, // Visitador
-                    cells[4].textContent  // Fecha
+                    cells[0].textContent,
+                    cells[1].textContent,
+                    cells[2].textContent,
+                    cells[3].textContent,
+                    cells[4].textContent
                 ];
                 data.push(rowData);
-            });
+            }
 
-            // Guardamos los datos en localStorage
             localStorage.setItem("visitacionData", JSON.stringify(data));
             alert("Información guardada correctamente.");
         }
 
         // Función para cargar la información desde localStorage
         function loadInformation() {
-            const savedData =
+            const savedData = JSON.parse(localStorage.getItem("visitacionData"));
+            if (savedData && Array.isArray(savedData)) {
+                const table = document.getElementById("visitacionTable").getElementsByTagName('tbody')[0];
+                savedData.forEach(rowData => {
+                    const newRow = table.insertRow();
+                    newRow.innerHTML = `
+                        <td>${rowData[0]}</td>
+                        <td>${rowData[1]}</td>
+                        <td>${rowData[2]}</td>
+                        <td>${rowData[3]}</td>
+                        <td>${rowData[4]}</td>
+                        <td><button onclick="deleteRow(this)">Eliminar</button></td>
+                    `;
+                });
+            }
+        }
+
+        // Cargar la información al cargar la página
+        window.onload = function () {
+            loadInformation();
+        };
+
+        // Función para mostrar/ocultar el menú
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+    </script>
+</body>
+
+</html>
