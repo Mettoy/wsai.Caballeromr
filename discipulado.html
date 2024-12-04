@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discipulado</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         /* Estilo general */
         body {
@@ -61,17 +60,44 @@
 
         input[type="text"],
         input[type="date"] {
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #d1d5db;
             border-radius: 5px;
             margin: 5px 0;
-            width: calc(100% - 22px);
+            width: calc(100% - 20px);
         }
 
         input[type="text"]:focus,
         input[type="date"]:focus {
             border-color: #2563eb; /* Azul */
             outline: none;
+        }
+
+        /* Formulario */
+        .add-person-form {
+            background-color: #eff6ff; /* Azul claro */
+            border: 1px solid #2563eb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .add-person-form input,
+        .add-person-form button {
+            flex: 1 1 calc(33.33% - 20px); /* Tres columnas ajustables */
+        }
+
+        .add-person-form button {
+            flex: 1 1 100%; /* Botón ocupa toda la fila */
+            background-color: #1e40af;
+            color: white;
+        }
+
+        .add-person-form button:hover {
+            background-color: #2563eb;
         }
 
         /* Tabla */
@@ -102,27 +128,18 @@
             background-color: #e0f2fe; /* Azul muy claro */
         }
 
-        /* Formulario plegable */
-        .add-person-form {
-            display: none;
-            background-color: #eff6ff; /* Azul claro */
-            border: 1px solid #2563eb;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
+        /* Buscador */
+        #searchInput {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            margin-bottom: 20px;
         }
 
-        /* Colores según estado */
-        .yellow {
-            background-color: #fde047; /* Amarillo */
-        }
-
-        .green {
-            background-color: #86efac; /* Verde */
-        }
-
-        .red {
-            background-color: #fca5a5; /* Rojo */
+        #searchInput:focus {
+            border-color: #2563eb;
+            outline: none;
         }
     </style>
 </head>
@@ -137,24 +154,15 @@
     <div class="content">
         <h2>Discipulado</h2>
 
-        <!-- Cantidad de personas registradas -->
-        <p>Total de personas registradas: <span id="personCount">0</span></p>
-
-        <!-- Botón para alternar el formulario plegable -->
-        <button onclick="toggleForm()">Agregar Persona</button>
-
         <!-- Formulario para agregar personas -->
-        <div class="add-person-form" id="addPersonFormContainer">
-            <h3>Agregar Persona</h3>
-            <form id="addPersonForm">
-                <input type="text" id="name" placeholder="Nombre" required>
-                <input type="text" id="address" placeholder="Dirección" required>
-                <input type="text" id="phone" placeholder="Teléfono" required>
-                <input type="text" id="discipler" placeholder="Discipulador" required>
-                <input type="text" id="comment" placeholder="Comentario" required>
-                <input type="date" id="date" required>
-                <button type="submit">Agregar Persona</button>
-            </form>
+        <div class="add-person-form">
+            <input type="text" id="name" placeholder="Nombre" required>
+            <input type="text" id="address" placeholder="Dirección" required>
+            <input type="text" id="phone" placeholder="Teléfono" required>
+            <input type="text" id="discipler" placeholder="Discipulador" required>
+            <input type="text" id="comment" placeholder="Comentario" required>
+            <input type="date" id="date" required>
+            <button onclick="addPerson()">Agregar Persona</button>
         </div>
 
         <!-- Buscador -->
@@ -181,8 +189,74 @@
     </div>
 
     <script>
-        // Funciones JS (sin cambios)
-        /* ... Código JavaScript existente ... */
+        // Función para agregar una nueva persona a la tabla
+        function addPerson() {
+            // Obtener los valores del formulario
+            const name = document.getElementById("name").value;
+            const address = document.getElementById("address").value;
+            const phone = document.getElementById("phone").value;
+            const discipler = document.getElementById("discipler").value;
+            const comment = document.getElementById("comment").value;
+            const date = document.getElementById("date").value;
+
+            // Crear una nueva fila en la tabla
+            const table = document.getElementById("discipuladoTable").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>${address}</td>
+                <td>${phone}</td>
+                <td>${discipler}</td>
+                <td>${comment}</td>
+                <td>${date}</td>
+                <td>
+                    <select onchange="updateRowStatus(this)">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </td>
+                <td><button onclick="deleteRow(this)">Eliminar</button></td>
+            `;
+
+            // Limpiar los campos del formulario
+            document.getElementById("name").value = '';
+            document.getElementById("address").value = '';
+            document.getElementById("phone").value = '';
+            document.getElementById("discipler").value = '';
+            document.getElementById("comment").value = '';
+            document.getElementById("date").value = '';
+        }
+
+        // Función para eliminar una fila
+        function deleteRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+
+        // Función para buscar en la tabla
+        function searchTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("discipuladoTable");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    tr[i].style.display = txtValue.toUpperCase().includes(filter) ? '' : 'none';
+                }
+            }
+        }
+
+        // Función para actualizar el color de la fila según el estado
+        function updateRowStatus(selectElement) {
+            const row = selectElement.parentElement.parentElement;
+            const status = selectElement.value;
+            row.style.backgroundColor = status === "si" ? "#86efac" : status === "no" ? "#fca5a5" : "#fde047";
+        }
     </script>
 
 </body>
