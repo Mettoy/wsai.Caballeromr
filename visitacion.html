@@ -24,11 +24,25 @@
         }
 
         .menu {
-            display: none;
+            display: block;
+            background-color: #1e3a8a;
+            color: white;
+            padding: 10px;
         }
 
-        .menu.active {
-            display: block;
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu ul li {
+            padding: 5px 0;
+        }
+
+        .menu ul li a {
+            color: white;
+            text-decoration: none;
         }
 
         .container {
@@ -59,11 +73,14 @@
             margin-top: 20px;
         }
 
-        table, th, td {
+        table,
+        th,
+        td {
             border: 1px solid #ddd;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
         }
@@ -95,11 +112,20 @@
 <body>
     <!-- Barra de navegación -->
     <div class="navbar">
-        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
         <div class="logo">Sistema único caballeros</div>
         <div class="user-info">
             <span>Bienvenido, <span id="username"></span></span>
         </div>
+    </div>
+
+    <!-- Menú -->
+    <div class="menu">
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Discipulado</a></li>
+            <li><a href="#">Cultos</a></li>
+            <li><a href="#">Visitación</a></li>
+        </ul>
     </div>
 
     <!-- Contenido principal -->
@@ -125,19 +151,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="text" placeholder="Nombre"></td>
-                    <td><input type="text" placeholder="Dirección"></td>
-                    <td><input type="text" placeholder="Teléfono"></td>
-                    <td><input type="text" placeholder="Discipulador"></td>
-                    <td><input type="text" placeholder="Comentarios"></td>
-                    <td><input type="date"></td>
-                </tr>
+                <!-- Las filas se cargarán dinámicamente -->
             </tbody>
         </table>
 
         <!-- Contador -->
-        <div id="contador">Personas registradas: 1</div>
+        <div id="contador">Personas registradas: 0</div>
 
         <!-- Tabla de estadísticas -->
         <h3>Estadísticas de Visitas por Mes</h3>
@@ -155,10 +174,31 @@
     </div>
 
     <script>
-        // Función para mostrar/ocultar el menú
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('active');
+        // Función para cargar datos guardados
+        function cargarDatos() {
+            const datosGuardados = JSON.parse(localStorage.getItem('visitacionDatos')) || [];
+            const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
+
+            datosGuardados.forEach(fila => {
+                const nuevaFila = tabla.insertRow();
+                fila.forEach(celda => {
+                    const nuevaCelda = nuevaFila.insertCell();
+                    if (nuevaCelda.cellIndex === 5) {
+                        nuevaCelda.innerHTML = `<input type="date" value="${celda}">`;
+                    } else {
+                        nuevaCelda.innerHTML = `<input type="text" value="${celda}">`;
+                    }
+                });
+            });
+
+            actualizarContador();
+        }
+
+        // Función para guardar datos automáticamente
+        function guardarDatos() {
+            const tabla = document.getElementById('tabla-visitacion').getElementsByTagName('tbody')[0];
+            const filas = Array.from(tabla.rows).map(fila => Array.from(fila.cells).map(celda => celda.querySelector('input').value));
+            localStorage.setItem('visitacionDatos', JSON.stringify(filas));
         }
 
         // Función para agregar una fila nueva
@@ -169,13 +209,14 @@
             for (let i = 0; i < 6; i++) {
                 let nuevaCelda = nuevaFila.insertCell(i);
                 if (i === 5) {
-                    nuevaCelda.innerHTML = `<input type="date">`;
+                    nuevaCelda.innerHTML = `<input type="date" onchange="guardarDatos()">`;
                 } else {
-                    nuevaCelda.innerHTML = `<input type="text" placeholder="Campo ${i + 1}">`;
+                    nuevaCelda.innerHTML = `<input type="text" oninput="guardarDatos()">`;
                 }
             }
 
             actualizarContador();
+            guardarDatos();
         }
 
         // Función para actualizar el contador
@@ -207,13 +248,8 @@
             }
         }
 
-        // Inicializar con nombre de usuario
-        const username = localStorage.getItem('username');
-        if (username) {
-            document.getElementById('username').textContent = username;
-        } else {
-            window.location.href = "inicio-sesion.html";
-        }
+        // Inicializar con datos cargados
+        cargarDatos();
     </script>
 </body>
 
