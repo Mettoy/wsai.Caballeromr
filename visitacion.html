@@ -207,9 +207,9 @@
 
         <!-- Contenedor para los botones -->
         <div class="button-container">
-            <button>Agregar Visitación</button>
-            <button>Ver Estadísticas</button>
-            <button>Guardar Información</button>
+            <button onclick="addVisitacion()">Agregar Visitación</button>
+            <button onclick="viewStatistics()">Ver Estadísticas</button>
+            <button onclick="saveInformation()">Guardar Información</button>
         </div>
 
         <!-- Tabla de Visitación -->
@@ -243,6 +243,37 @@
             });
         }
 
+        // Función para agregar una nueva visitación
+        function addVisitacion() {
+            const table = document.getElementById("visitacionTable").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            newRow.innerHTML = `
+                <td>Juan Pérez</td>
+                <td>Calle Falsa 123</td>
+                <td>123-456-789</td>
+                <td>Pedro Sánchez</td>
+                <td>2024-12-04</td>
+                <td><button onclick="deleteRow(this)">Eliminar</button></td>
+            `;
+        }
+
+        // Función para eliminar una fila de la tabla
+        function deleteRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+
+        // Función para ver las estadísticas (muestra un mensaje por ahora)
+        function viewStatistics() {
+            alert("Aquí se mostrarán las estadísticas.");
+        }
+
+        // Función para guardar la información (solo muestra un mensaje por ahora)
+        function saveInformation() {
+            alert("Información guardada correctamente.");
+        }
+
         // Función para abrir y cerrar el menú móvil
         function toggleMenu() {
             const menu = document.getElementById("menu");
@@ -253,3 +284,4 @@
 </body>
 
 </html>
+
