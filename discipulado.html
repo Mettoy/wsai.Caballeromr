@@ -147,6 +147,15 @@
         .status-summary span {
             margin-right: 15px;
         }
+
+        .save-button {
+            background-color: #ef4444; /* Rojo */
+            color: white;
+        }
+
+        .save-button:hover {
+            background-color: #dc2626; /* Rojo más oscuro */
+        }
     </style>
 </head>
 
@@ -160,18 +169,7 @@
     <div class="content">
         <h2>Discipulado</h2>
 
-        <div class="add-person-form">
-            <input type="text" id="name" placeholder="Nombre" required>
-            <input type="text" id="address" placeholder="Dirección" required>
-            <input type="text" id="phone" placeholder="Teléfono" required>
-            <input type="text" id="discipler" placeholder="Discipulador" required>
-            <input type="text" id="comment" placeholder="Comentario" required>
-            <input type="date" id="date" required>
-            <button onclick="addPerson()">Agregar Persona</button>
-        </div>
-
-        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar por nombre...">
-
+        <!-- Tabla de discipulado y Botón de guardar en la parte superior -->
         <table id="discipuladoTable">
             <thead>
                 <tr>
@@ -196,7 +194,20 @@
             <span id="noCount">No Finalizados: 0</span>
         </div>
 
-        <button onclick="saveInformation()">Guardar Información</button>
+        <button class="save-button" onclick="saveInformation()">Guardar Información</button>
+
+        <!-- Formulario para agregar personas -->
+        <div class="add-person-form">
+            <input type="text" id="name" placeholder="Nombre" required>
+            <input type="text" id="address" placeholder="Dirección" required>
+            <input type="text" id="phone" placeholder="Teléfono" required>
+            <input type="text" id="discipler" placeholder="Discipulador" required>
+            <input type="text" id="comment" placeholder="Comentario" required>
+            <input type="date" id="date" required>
+            <button onclick="addPerson()">Agregar Persona</button>
+        </div>
+
+        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar por nombre...">
     </div>
 
     <script>
@@ -287,7 +298,7 @@
         }
 
         function saveInformation() {
-            alert("Información guardada.");
+            alert("Información guardada");
         }
     </script>
 
