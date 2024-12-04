@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wsiaf caballeros</title>
+    <title>SAI CABALLEROSo</title>
     <style>
+        /* Estilos generales */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -22,6 +23,50 @@
             padding: 10px 20px;
         }
 
+        .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .logo {
+            font-size: 20px;
+        }
+
+        .menu {
+            display: none;
+            background-color: #003366;
+            color: white;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .menu.active {
+            display: block;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu ul li {
+            padding: 10px 0;
+        }
+
+        .menu ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .menu ul li a:hover {
+            text-decoration: underline;
+        }
+
         .container {
             padding: 20px;
         }
@@ -29,6 +74,28 @@
         h2 {
             text-align: center;
             color: #003366;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #003366;
+            color: white;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
 
         .button-group {
@@ -50,157 +117,95 @@
         .button-group button:hover {
             background-color: #0055aa;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 0 auto;
-            margin-bottom: 20px;
-        }
-
-        table th,
-        table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-
-        table th {
-            background-color: #003366;
-            color: white;
-        }
-
-        table tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .hidden {
-            display: none;
-        }
     </style>
 </head>
 
 <body>
     <!-- Barra de navegación -->
     <div class="navbar">
-        <div class="logo">Sistema Consolidado</div>
+        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+        <div class="logo">SAI CABALLEROS</div>
+    </div>
+
+    <!-- Menú desplegable -->
+    <div id="menu" class="menu">
+        <ul>
+            <li><a href="discipulado.html">Discipulado</a></li>
+            <li><a href="visitacion.html">Visitación</a></li>
+            <li><a href="asistencia-cultos.html">Asistencia Cultos</a></li>
+            <li><a href="directivo.html">Agregar Nuevo Directivo</a></li>
+        </ul>
     </div>
 
     <!-- Contenedor principal -->
     <div class="container">
-        <h2>Datos Consolidado de Visitación, Discipulado y Cultos</h2>
+        <h2>Resumen Consolidado</h2>
 
-        <!-- Botones para alternar tablas -->
+        <!-- Tabla resumen -->
+        <table id="tablaResumen">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>Total Registros</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Visitación</td>
+                    <td id="visitacionCount">0</td>
+                </tr>
+                <tr>
+                    <td>Discipulado</td>
+                    <td id="discipuladoCount">0</td>
+                </tr>
+                <tr>
+                    <td>Cultos</td>
+                    <td id="cultoCount">0</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Botones para agregar datos -->
         <div class="button-group">
-            <button onclick="showTable('visitacion')">Visitación</button>
-            <button onclick="showTable('discipulado')">Discipulado</button>
-            <button onclick="showTable('culto')">Cultos</button>
+            <button onclick="agregarRegistro('visitacion')">Agregar Visitación</button>
+            <button onclick="agregarRegistro('discipulado')">Agregar Discipulado</button>
+            <button onclick="agregarRegistro('culto')">Agregar Culto</button>
         </div>
-
-        <!-- Tabla de Visitación -->
-        <table id="visitacionTable">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Discipulador</th>
-                    <th>Comentarios</th>
-                    <th>Fecha</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Juan Pérez</td>
-                    <td>Barrio Central</td>
-                    <td>1234-5678</td>
-                    <td>Pedro López</td>
-                    <td>Visita inicial</td>
-                    <td>2024-01-15</td>
-                </tr>
-                <tr>
-                    <td>Maria Gómez</td>
-                    <td>Colonia Norte</td>
-                    <td>5678-1234</td>
-                    <td>Ana Torres</td>
-                    <td>Requiere seguimiento</td>
-                    <td>2024-02-20</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Tabla de Discipulado -->
-        <table id="discipuladoTable" class="hidden">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Clase</th>
-                    <th>Estado</th>
-                    <th>Discipulador</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Juan Pérez</td>
-                    <td>Bautismo</td>
-                    <td>Completado</td>
-                    <td>Pedro López</td>
-                    <td>2024-01-01</td>
-                    <td>2024-02-01</td>
-                </tr>
-                <tr>
-                    <td>Maria Gómez</td>
-                    <td>Evangelización</td>
-                    <td>En progreso</td>
-                    <td>Ana Torres</td>
-                    <td>2024-03-01</td>
-                    <td>-</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Tabla de Cultos -->
-        <table id="cultoTable" class="hidden">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Horario</th>
-                    <th>Predicador</th>
-                    <th>Tema</th>
-                    <th>Asistentes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>2024-01-10</td>
-                    <td>10:00 AM</td>
-                    <td>Pablo Hernández</td>
-                    <td>Fe y Esperanza</td>
-                    <td>50</td>
-                </tr>
-                <tr>
-                    <td>2024-02-14</td>
-                    <td>6:00 PM</td>
-                    <td>Maria Torres</td>
-                    <td>Amor Incondicional</td>
-                    <td>65</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
     <script>
-        function showTable(tableId) {
-            // Ocultar todas las tablas
-            document.getElementById("visitacionTable").classList.add("hidden");
-            document.getElementById("discipuladoTable").classList.add("hidden");
-            document.getElementById("cultoTable").classList.add("hidden");
+        // Variables de conteo para cada categoría
+        let visitacionCount = 0;
+        let discipuladoCount = 0;
+        let cultoCount = 0;
 
-            // Mostrar la tabla seleccionada
-            document.getElementById(tableId + "Table").classList.remove("hidden");
+        // Función para actualizar la tabla de resumen
+        function actualizarTabla() {
+            document.getElementById("visitacionCount").textContent = visitacionCount;
+            document.getElementById("discipuladoCount").textContent = discipuladoCount;
+            document.getElementById("cultoCount").textContent = cultoCount;
         }
+
+        // Función para agregar registros y actualizar los contadores
+        function agregarRegistro(tipo) {
+            if (tipo === "visitacion") {
+                visitacionCount++;
+            } else if (tipo === "discipulado") {
+                discipuladoCount++;
+            } else if (tipo === "culto") {
+                cultoCount++;
+            }
+            actualizarTabla();
+        }
+
+        // Mostrar/ocultar el menú
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            menu.classList.toggle("active");
+        }
+
+        // Inicializar la tabla con valores actualizados
+        actualizarTabla();
     </script>
 </body>
 
