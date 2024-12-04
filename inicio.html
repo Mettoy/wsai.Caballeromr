@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gráficos de Visitación</title>
+    <title>Información Consolidada</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,108 +31,176 @@
             color: #003366;
         }
 
-        canvas {
-            display: block;
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .button-group button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #003366;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .button-group button:hover {
+            background-color: #0055aa;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #003366;
+            color: white;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
     <!-- Barra de navegación -->
     <div class="navbar">
-        <div class="logo">Sistema Unificado</div>
+        <div class="logo">Sistema Consolidado</div>
     </div>
 
     <!-- Contenedor principal -->
     <div class="container">
-        <h2>Gráficos de Visitación</h2>
+        <h2>Datos Consolidado de Visitación, Discipulado y Cultos</h2>
 
-        <!-- Gráfico de sectores -->
-        <canvas id="sectorChart" width="400" height="400"></canvas>
+        <!-- Botones para alternar tablas -->
+        <div class="button-group">
+            <button onclick="showTable('visitacion')">Visitación</button>
+            <button onclick="showTable('discipulado')">Discipulado</button>
+            <button onclick="showTable('culto')">Cultos</button>
+        </div>
+
+        <!-- Tabla de Visitación -->
+        <table id="visitacionTable">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Discipulador</th>
+                    <th>Comentarios</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Juan Pérez</td>
+                    <td>Barrio Central</td>
+                    <td>1234-5678</td>
+                    <td>Pedro López</td>
+                    <td>Visita inicial</td>
+                    <td>2024-01-15</td>
+                </tr>
+                <tr>
+                    <td>Maria Gómez</td>
+                    <td>Colonia Norte</td>
+                    <td>5678-1234</td>
+                    <td>Ana Torres</td>
+                    <td>Requiere seguimiento</td>
+                    <td>2024-02-20</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Tabla de Discipulado -->
+        <table id="discipuladoTable" class="hidden">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Clase</th>
+                    <th>Estado</th>
+                    <th>Discipulador</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Juan Pérez</td>
+                    <td>Bautismo</td>
+                    <td>Completado</td>
+                    <td>Pedro López</td>
+                    <td>2024-01-01</td>
+                    <td>2024-02-01</td>
+                </tr>
+                <tr>
+                    <td>Maria Gómez</td>
+                    <td>Evangelización</td>
+                    <td>En progreso</td>
+                    <td>Ana Torres</td>
+                    <td>2024-03-01</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Tabla de Cultos -->
+        <table id="cultoTable" class="hidden">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Horario</th>
+                    <th>Predicador</th>
+                    <th>Tema</th>
+                    <th>Asistentes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2024-01-10</td>
+                    <td>10:00 AM</td>
+                    <td>Pablo Hernández</td>
+                    <td>Fe y Esperanza</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>2024-02-14</td>
+                    <td>6:00 PM</td>
+                    <td>Maria Torres</td>
+                    <td>Amor Incondicional</td>
+                    <td>65</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <script>
-        // Datos de ejemplo
-        const categorias = ["Categoría A", "Categoría B", "Categoría C", "Categoría D"];
-        const meses = ["Enero", "Febrero", "Marzo", "Abril"];
-        const datos = {
-            "Enero": [30, 20, 50, 40],
-            "Febrero": [40, 30, 20, 10],
-            "Marzo": [25, 35, 15, 25],
-            "Abril": [20, 40, 30, 10],
-        };
+        function showTable(tableId) {
+            // Ocultar todas las tablas
+            document.getElementById("visitacionTable").classList.add("hidden");
+            document.getElementById("discipuladoTable").classList.add("hidden");
+            document.getElementById("cultoTable").classList.add("hidden");
 
-        // Convertir datos a porcentajes para el gráfico
-        const calcularPorcentajes = (mes) => {
-            const total = datos[mes].reduce((a, b) => a + b, 0);
-            return datos[mes].map((valor) => ((valor / total) * 100).toFixed(2));
-        };
-
-        // Inicializar gráfico
-        const ctx = document.getElementById("sectorChart").getContext("2d");
-        const sectorChart = new Chart(ctx, {
-            type: "pie",
-            data: {
-                labels: categorias,
-                datasets: [{
-                    label: "Porcentaje de Registros",
-                    data: calcularPorcentajes("Enero"), // Mostrar datos de Enero por defecto
-                    backgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                        "#4BC0C0",
-                    ],
-                    hoverOffset: 4,
-                }],
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: "top",
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: (context) => {
-                                return `${context.label}: ${context.raw}%`;
-                            },
-                        },
-                    },
-                },
-            },
-        });
-
-        // Cambiar datos según el mes
-        function cambiarMes(mes) {
-            sectorChart.data.datasets[0].data = calcularPorcentajes(mes);
-            sectorChart.update();
+            // Mostrar la tabla seleccionada
+            document.getElementById(tableId + "Table").classList.remove("hidden");
         }
-
-        // Agregar botones dinámicos para cambiar de mes
-        const container = document.querySelector(".container");
-        const botonesMeses = document.createElement("div");
-        botonesMeses.style.textAlign = "center";
-        botonesMeses.style.marginTop = "20px";
-
-        meses.forEach((mes) => {
-            const button = document.createElement("button");
-            button.textContent = mes;
-            button.style.margin = "5px";
-            button.style.padding = "10px 20px";
-            button.style.border = "none";
-            button.style.backgroundColor = "#003366";
-            button.style.color = "white";
-            button.style.cursor = "pointer";
-            button.style.borderRadius = "5px";
-
-            button.addEventListener("click", () => cambiarMes(mes));
-            botonesMeses.appendChild(button);
-        });
-
-        container.appendChild(botonesMeses);
     </script>
 </body>
 
