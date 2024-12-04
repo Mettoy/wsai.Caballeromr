@@ -5,225 +5,236 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asistencia de Cultos</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Estilo básico de la tabla */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .menu-toggle {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .menu {
+            display: none;
+            background-color: #1e3a8a;
+            padding: 10px;
+        }
+
+        .menu.active {
+            display: block;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu ul li {
+            padding: 10px 0;
+        }
+
+        .menu ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #1e3a8a;
+            text-align: center;
+        }
+
+        .buttons {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+        }
+
+        .add-button {
+            background-color: #4caf50;
+        }
+
+        .save-button {
+            background-color: #f44336;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px; /* Añadir margen superior para separarla del botón */
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        th,
-        td {
-            padding: 10px;
+        th, td {
             border: 1px solid #ddd;
+            padding: 10px;
             text-align: left;
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #1e3a8a;
+            color: white;
         }
 
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
 
-        /* Estilo para los botones */
-        .add-button,
-        .save-button {
-            padding: 10px 20px;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-bottom: 20px;
-            margin-right: 10px; /* Añadir margen entre los botones */
-        }
-
-        /* Botón "Añadir Actividad" - color verde */
-        .add-button {
-            background-color: #4CAF50;
-        }
-
-        .add-button:hover {
-            background-color: #45a049;
-        }
-
-        /* Botón "Guardar Información" - color rojo */
-        .save-button {
-            background-color: #f44336;
-        }
-
-        .save-button:hover {
-            background-color: #e53935;
-        }
-
-        /* Estilo para la fila de la tabla */
-        .new-row input {
-            width: 100%;
-            padding: 8px;
-            margin: 4px 0;
-            box-sizing: border-box;
-        }
-
-        /* Estilo del contenedor principal */
-        .container {
-            margin: 20px;
+        tr:hover {
+            background-color: #f1f1f1;
         }
     </style>
 </head>
 
 <body>
-
     <div class="navbar">
         <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
         <div class="logo">Sistema único caballeros</div>
-        <div class="user-info">
-            <span>Bienvenido, <span id="username"></span></span>
-        </div>
+        <div class="user-info">Bienvenido, <span id="username"></span></div>
     </div>
 
-    <!-- Menú desplegable -->
     <div id="menu" class="menu">
         <ul>
             <li><a href="discipulado.html">Discipulado</a></li>
             <li><a href="visitacion.html">Visitación</a></li>
             <li><a href="asistencia.html">Asistencia Cultos</a></li>
-            <li><a href="#">Asistencia Retiros</a></li>
-            <li><a href="#">Actividades</a></li>
-            <li><a href="directivo.html">Agregar Nuevo Directivo</a></li>
         </ul>
     </div>
 
     <div class="container">
         <h2>Asistencia de Cultos</h2>
 
-        <!-- Botones para agregar actividad y guardar información -->
-        <button class="add-button" onclick="addRow()">Añadir Actividad</button>
-        <button class="save-button" onclick="saveInformation()">Guardar Información</button>
+        <div class="buttons">
+            <button class="add-button" onclick="addRow()">Añadir Actividad</button>
+        </div>
 
-        <!-- Tabla de actividades -->
         <table id="activitiesTable">
             <thead>
                 <tr>
                     <th>Actividad</th>
                     <th>Fecha</th>
                     <th>Responsable</th>
-                    <th>Asistencia%</th> <!-- Nueva columna para asistencia -->
+                    <th>Asistencia%</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
+            <tbody></tbody>
+        </table>
+
+        <h3>Estadísticas</h3>
+        <table id="statisticsTable">
+            <thead>
+                <tr>
+                    <th>Total de Actividades</th>
+                    <th>Promedio de Asistencia%</th>
+                </tr>
+            </thead>
             <tbody>
-                <!-- Las filas se agregarán dinámicamente aquí -->
+                <tr>
+                    <td id="totalActivities">0</td>
+                    <td id="averageAttendance">0</td>
+                </tr>
             </tbody>
         </table>
     </div>
 
     <script>
-        // Recuperar el nombre de usuario desde localStorage
-        const username = localStorage.getItem('username');
+        const username = localStorage.getItem('username') || "Usuario";
+        document.getElementById('username').textContent = username;
 
-        // Verificar si el usuario está logueado
-        if (username) {
-            // Mostrar el nombre de usuario en el mensaje de bienvenida
-            document.getElementById('username').textContent = username;
-        } else {
-            // Si no está logueado, redirigir a la página de inicio de sesión
-            window.location.href = "inicio-sesion.html";
-        }
-
-        // Función para mostrar/ocultar el menú
         function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('active');
+            document.getElementById('menu').classList.toggle('active');
         }
 
-        // Función para agregar una nueva fila en la tabla
         function addRow() {
             const table = document.getElementById("activitiesTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
-
-            // Crear las celdas para la nueva fila
-            const activityCell = newRow.insertCell(0);
-            const dateCell = newRow.insertCell(1);
-            const responsibleCell = newRow.insertCell(2);
-            const attendanceCell = newRow.insertCell(3);  // Nueva celda para asistencia%
-            const actionsCell = newRow.insertCell(4);
-
-            // Crear los inputs para cada celda
-            activityCell.innerHTML = '<input type="text" placeholder="Nombre de la actividad" />';
-            dateCell.innerHTML = '<input type="date" />';
-            responsibleCell.innerHTML = '<input type="text" placeholder="Responsable" />';
-            attendanceCell.innerHTML = '<input type="number" placeholder="Asistencia %" min="0" max="100" />';  // Campo para Asistencia%
-            actionsCell.innerHTML = '<button onclick="deleteRow(this)">Eliminar</button>';
-
-            // Establecer foco en el primer input para facilidad de uso
-            activityCell.querySelector('input').focus();
+            newRow.innerHTML = `
+                <td><input type="text" placeholder="Nombre de la actividad"></td>
+                <td><input type="date"></td>
+                <td><input type="text" placeholder="Responsable"></td>
+                <td><input type="number" placeholder="%" min="0" max="100"></td>
+                <td><button onclick="deleteRow(this)">Eliminar</button></td>
+            `;
+            saveInformation();
         }
 
-        // Función para eliminar una fila de la tabla
         function deleteRow(button) {
-            const row = button.closest('tr');
-            row.remove();
+            button.closest('tr').remove();
+            saveInformation();
         }
 
-        // Función para guardar la información
         function saveInformation() {
-            const table = document.getElementById("activitiesTable").getElementsByTagName('tbody')[0];
-            const rows = table.rows;
-            const activities = [];
-
-            // Iterar sobre todas las filas de la tabla
-            for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].cells;
-                const activity = cells[0].querySelector('input').value;
-                const date = cells[1].querySelector('input').value;
-                const responsible = cells[2].querySelector('input').value;
-                const attendance = cells[3].querySelector('input').value;
-
-                activities.push({
-                    activity,
-                    date,
-                    responsible,
-                    attendance
-                });
-            }
-
-            // Guardar las actividades en localStorage
-            localStorage.setItem('activities', JSON.stringify(activities));
-
-            alert("Información guardada correctamente.");
+            const rows = document.querySelectorAll("#activitiesTable tbody tr");
+            const data = Array.from(rows).map(row => ({
+                activity: row.cells[0].querySelector('input').value,
+                date: row.cells[1].querySelector('input').value,
+                responsible: row.cells[2].querySelector('input').value,
+                attendance: row.cells[3].querySelector('input').value,
+            }));
+            localStorage.setItem("activities", JSON.stringify(data));
+            updateStatistics(data);
         }
 
-        // Función para cargar la información guardada desde localStorage
+        function updateStatistics(data) {
+            const total = data.length;
+            const average =
+                total > 0
+                    ? data.reduce((sum, item) => sum + (parseFloat(item.attendance) || 0), 0) / total
+                    : 0;
+            document.getElementById("totalActivities").textContent = total;
+            document.getElementById("averageAttendance").textContent = average.toFixed(2);
+        }
+
         window.onload = function () {
-            const savedActivities = JSON.parse(localStorage.getItem('activities'));
-            if (savedActivities) {
-                const table = document.getElementById("activitiesTable").getElementsByTagName('tbody')[0];
-
-                // Cargar cada actividad guardada
-                savedActivities.forEach(activity => {
-                    const newRow = table.insertRow();
-
-                    // Crear las celdas para la nueva fila
-                    const activityCell = newRow.insertCell(0);
-                    const dateCell = newRow.insertCell(1);
-                    const responsibleCell = newRow.insertCell(2);
-                    const attendanceCell = newRow.insertCell(3);
-                    const actionsCell = newRow.insertCell(4);
-
-                    // Asignar los valores de las actividades
-                    activityCell.innerHTML = `<input type="text" value="${activity.activity}" />`;
-                    dateCell.innerHTML = `<input type="date" value="${activity.date}" />`;
-                    responsibleCell.innerHTML = `<input type="text" value="${activity.responsible}" />`;
-                    attendanceCell.innerHTML = `<input type="number" value="${activity.attendance}" min="0" max="100" />`;
-                    actionsCell.innerHTML = '<button onclick="deleteRow(this)">Eliminar</button>';
-                });
-            }
-        }
+            const savedData = JSON.parse(localStorage.getItem("activities")) || [];
+            const table = document.getElementById("activitiesTable").getElementsByTagName('tbody')[0];
+            savedData.forEach(item => {
+                const newRow = table.insertRow();
+                newRow.innerHTML = `
+                    <td><input type="text" value="${item.activity}" /></td>
+                    <td><input type="date" value="${item.date}" /></td>
+                    <td><input type="text" value="${item.responsible}" /></td>
+                    <td><input type="number" value="${item.attendance}" min="0" max="100" /></td>
+                    <td><button onclick="deleteRow(this)">Eliminar</button></td>
+                `;
+            });
+            updateStatistics(savedData);
+        };
     </script>
-
 </body>
 
 </html>
-
