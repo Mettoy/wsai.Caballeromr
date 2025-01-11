@@ -1,366 +1,47 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discipulado</title>
-    <style>
-        /* Estilo general */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f8ff;
-            color: #333;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #1e3a8a;
-            color: white;
-            padding: 10px 20px;
-        }
-
-        .menu-toggle {
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        h2 {
-            color: #1e3a8a;
-        }
-
-        button {
-            background-color: #1e40af;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        button:hover {
-            background-color: #2563eb;
-        }
-
-        input[type="text"],
-        input[type="date"] {
-            padding: 8px;
-            border: 1px solid #d1d5db;
-            border-radius: 5px;
-            margin: 5px 0;
-            width: calc(100% - 20px);
-        }
-
-        input[type="text"]:focus,
-        input[type="date"]:focus {
-            border-color: #2563eb;
-            outline: none;
-        }
-
-        .add-person-form {
-            background-color: #eff6ff;
-            border: 1px solid #2563eb;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .add-person-form input,
-        .add-person-form button {
-            flex: 1 1 calc(33.33% - 20px);
-        }
-
-        .add-person-form button {
-            flex: 1 1 100%;
-            background-color: #1e40af;
-            color: white;
-        }
-
-        .add-person-form button:hover {
-            background-color: #2563eb;
-        }
-
-        /* Estilo de la tabla */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            background-color: white;
-        }
-
-        th,
-        td {
-            text-align: left;
-            padding: 10px;
-            border: 1px solid #e5e7eb;
-        }
-
-        th {
-            background-color: #1e3a8a;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9fafb;
-        }
-
-        tr:hover {
-            background-color: #e0f2fe;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        #searchInput:focus {
-            border-color: #2563eb;
-            outline: none;
-        }
-
-        .status-summary {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f3f4f6;
-            border-radius: 5px;
-        }
-
-        .status-summary span {
-            margin-right: 15px;
-        }
-
-        .save-button {
-            background-color: #ef4444; /* Rojo */
-            color: white;
-        }
-
-        .save-button:hover {
-            background-color: #dc2626; /* Rojo más oscuro */
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="navbar">
-        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
-        <div class="logo">Sistema único caballeros</div>
-    </div>
-
-    <div class="content">
-        <h2>Discipulado</h2>
-
-        <!-- Botón para guardar información -->
-        <button class="save-button" onclick="saveInformation()">Guardar Información</button>
-
-        <!-- Formulario para agregar personas -->
-        <div class="add-person-form">
-            <input type="text" id="name" placeholder="Nombre" required>
-            <input type="text" id="address" placeholder="Dirección" required>
-            <input type="text" id="phone" placeholder="Teléfono" required>
-            <input type="text" id="discipler" placeholder="Discipulador" required>
-            <input type="text" id="comment" placeholder="Comentario" required>
-            <input type="date" id="date" required>
-            <button onclick="addPerson()">Agregar Persona</button>
-        </div>
-
-        <!-- Barra de búsqueda -->
-        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar por nombre...">
-
-        <!-- Tabla de discipulado -->
-        <table id="discipuladoTable">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Discipulador</th>
-                    <th>Comentario</th>
-                    <th>Fecha</th>
-                    <th>Finalizó</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Aquí se agregarán las filas de la tabla -->
-            </tbody>
-        </table>
-
-        <div class="status-summary">
-            <span id="pendienteCount">Pendientes: 0</span>
-            <span id="siCount">Finalizados: 0</span>
-            <span id="noCount">No Finalizados: 0</span>
-        </div>
-
-    </div>
-
-    <script>
-        // Función para agregar personas
-        function addPerson() {
-            const name = document.getElementById("name").value;
-            const address = document.getElementById("address").value;
-            const phone = document.getElementById("phone").value;
-            const discipler = document.getElementById("discipler").value;
-            const comment = document.getElementById("comment").value;
-            const date = document.getElementById("date").value;
-
-            const table = document.getElementById("discipuladoTable").getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-
-            newRow.innerHTML = `
-                <td>${name}</td>
-                <td>${address}</td>
-                <td>${phone}</td>
-                <td>${discipler}</td>
-                <td>${comment}</td>
-                <td>${date}</td>
-                <td>
-                    <select onchange="updateRowStatus(this)">
-                        <option value="pendiente">Pendiente</option>
-                        <option value="si">Sí</option>
-                        <option value="no">No</option>
-                    </select>
-                </td>
-                <td><button onclick="deleteRow(this)">Eliminar</button></td>
-            `;
-
-            // Limpiar los campos del formulario
-            document.getElementById("name").value = '';
-            document.getElementById("address").value = '';
-            document.getElementById("phone").value = '';
-            document.getElementById("discipler").value = '';
-            document.getElementById("comment").value = '';
-            document.getElementById("date").value = '';
-
-            updateStatusCount();
-        }
-
-        // Función para eliminar filas
-        function deleteRow(button) {
-            const row = button.parentElement.parentElement;
-            row.remove();
-            updateStatusCount();
-        }
-
-        // Función para actualizar el estado de cada fila
-        function updateRowStatus(selectElement) {
-            const row = selectElement.parentElement.parentElement;
-            const status = selectElement.value;
-            row.style.backgroundColor = status === "si" ? "#86efac" : status === "no" ? "#fca5a5" : "#fde047";
-            updateStatusCount();
-        }
-
-        // Función para buscar en la tabla
-        function searchTable() {
-            const input = document.getElementById("searchInput");
-            const filter = input.value.toUpperCase();
-            const table = document.getElementById("discipuladoTable");
-            const tr = table.getElementsByTagName("tr");
-
-            for (let i = 1; i < tr.length; i++) {
-                const td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    const txtValue = td.textContent || td.innerText;
-                    tr[i].style.display = txtValue.toUpperCase().includes(filter) ? '' : 'none';
-                }
-            }
-        }
-
-        // Función para actualizar los contadores de estado
-        function updateStatusCount() {
-            const rows = document.getElementById("discipuladoTable").getElementsByTagName('tr');
-            let pendiente = 0;
-            let si = 0;
-            let no = 0;
-
-            for (let i = 1; i < rows.length; i++) {
-                const status = rows[i].getElementsByTagName('td')[6].getElementsByTagName('select')[0].value;
-                if (status === "pendiente") pendiente++;
-                if (status === "si") si++;
-                if (status === "no") no++;
-            }
-
-            document.getElementById("pendienteCount").textContent = "Pendientes: " + pendiente;
-            document.getElementById("siCount").textContent = "Finalizados: " + si;
-            document.getElementById("noCount").textContent = "No Finalizados: " + no;
-        }
-
-        // Función para guardar la información en localStorage
-        function saveInformation() {
-            const rows = document.getElementById("discipuladoTable").getElementsByTagName('tr');
-            const tableData = [];
-
-            for (let i = 1; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName('td');
-                const rowData = [
-                    cells[0].textContent,
-                    cells[1].textContent,
-                    cells[2].textContent,
-                    cells[3].textContent,
-                    cells[4].textContent,
-                    cells[5].textContent,
-                    cells[6].getElementsByTagName('select')[0].value
-                ];
-                tableData.push(rowData);
-            }
-
-            localStorage.setItem("discipuladoData", JSON.stringify(tableData));
-            alert("Información guardada exitosamente.");
-        }
-
-        // Función para cargar la información desde localStorage
-        function loadInformation() {
-            const savedData = JSON.parse(localStorage.getItem("discipuladoData"));
-            if (savedData && Array.isArray(savedData)) {
-                const table = document.getElementById("discipuladoTable").getElementsByTagName('tbody')[0];
-                savedData.forEach(rowData => {
-                    const newRow = table.insertRow();
-                    newRow.innerHTML = `
-                        <td>${rowData[0]}</td>
-                        <td>${rowData[1]}</td>
-                        <td>${rowData[2]}</td>
-                        <td>${rowData[3]}</td>
-                        <td>${rowData[4]}</td>
-                        <td>${rowData[5]}</td>
-                        <td>
-                            <select onchange="updateRowStatus(this)">
-                                <option value="pendiente" ${rowData[6] === 'pendiente' ? 'selected' : ''}>Pendiente</option>
-                                <option value="si" ${rowData[6] === 'si' ? 'selected' : ''}>Sí</option>
-                                <option value="no" ${rowData[6] === 'no' ? 'selected' : ''}>No</option>
-                            </select>
-                        </td>
-                        <td><button onclick="deleteRow(this)">Eliminar</button></td>
-                    `;
-                });
-            }
-        }
-
-        // Cargar la información al cargar la página
-        window.onload = function () {
-            loadInformation();
-        };
-    </script>
-</body>
-
-</html>
+<html><head>
+<link href="css/user_styles.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="js/user.js">
+</script>
+</head><body bgcolor="tan">
+<center><b>Sistema de Votación Integral</b></center><br><br>
+<div id="page">
+<div id="header">
+<h1>Ingreso de Estudiantes</h1>
+<div class="news"><marquee>Hay nuevas votaciones en funcionamiento. ¡Pero no estarán para siempre! Simplemente inicie sesión y luego vaya a votaciones actuales para votar por sus candidatos favoritos. </marquee></div>
+</div>
+<div id="container">
+<table width="300" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#FFFFFF">
+<tr>
+<form name="form1" method="post" action="checklogin.php" onsubmit="return loginValidate(this)">
+<td>
+<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="tan">
+<tr>
+<td width="78">Username/Email</td>
+<td width="6">:</td>
+<td width="294"><input name="myusername" type="text" id="myusername"></td>
+</tr>
+<tr>
+<td>Password</td>
+<td>:</td>
+<td><input name="mypassword" type="password" id="mypassword"></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td><input type="submit" name="Submit" value="Login"></td>
+</tr>
+</table>
+</td>
+</form>
+</tr>
+</table>
+<center>
+<br>Not yet registered? <a href="registeracc.php"><b>Register Here</b></a>
+<br>Return to <a href="http://www.anu.ac.ke"><b>ANU Home Page</b></a>
+</center>
+</div>
+<div id="footer">
+<div class="bottom_addr">Para más desarrollos accede a <a href="https://www.configuroweb.com/">ConfiguroWeb</a></div>
+</div>
+</div>
+</body></html>
