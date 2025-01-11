@@ -1,105 +1,47 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wsiaf caballeros</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f9;
-        }
-
-        .login-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-
-        .login-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .login-container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #003366;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .login-container button:hover {
-            background-color: #0055aa;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="login-container">
-        <h2>Iniciar Sesión</h2>
-        <form id="loginForm">
-            <input type="text" id="username" placeholder="Nombre de usuario" required>
-            <input type="password" id="password" placeholder="Contraseña" required>
-            <button type="submit">Iniciar sesión</button>
-        </form>
-    </div>
-
-    <script>
-        // Lista de usuarios válidos
-        const validUsers = [
-            { username: "tesoreromr", password: "pblanco" },
-             { username: "vocal1", password: "iquintero" },
-             { username: "vocal2", password: "egarcia" },
-             { username: "vocal3", password: "cmaradiaga" },
-            { username: "secretariomr", password: "gorozco" },
-            { username: "vivepresidentemr", password: "fsilva" },
-            {username: "admi", password: "administracion" },
-            { username: "presidentemr", password: "dmettoy" },
-            { username: "asesormr", password: "rlanzas" }
-        ];
-
-        // Evento para el formulario de inicio de sesión
-        document.getElementById("loginForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-
-            // Validar usuario y contraseña
-            const user = validUsers.find(user => user.username === username && user.password === password);
-
-            if (user) {
-                // Guardar el nombre de usuario en localStorage
-                localStorage.setItem("username", username);
-
-                // Redirigir a inicio.html
-                window.location.href = "inicio.html";
-            } else {
-                alert("Usuario o contraseña incorrectos.");
-            }
-        });
-    </script>
-
-</body>
-
-</html>
+ <html><head>
+<link href="css/user_styles.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="js/user.js">
+</script>
+</head><body bgcolor="tan">
+<center><b>Sistema de Votación Integral</b></center><br><br>
+<div id="page">
+<div id="header">
+<h1>Ingreso de Estudiantes</h1>
+<div class="news"><marquee>Hay nuevas votaciones en funcionamiento. ¡Pero no estarán para siempre! Simplemente inicie sesión y luego vaya a votaciones actuales para votar por sus candidatos favoritos. </marquee></div>
+</div>
+<div id="container">
+<table width="300" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#FFFFFF">
+<tr>
+<form name="form1" method="post" action="checklogin.php" onsubmit="return loginValidate(this)">
+<td>
+<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="tan">
+<tr>
+<td width="78">Username/Email</td>
+<td width="6">:</td>
+<td width="294"><input name="myusername" type="text" id="myusername"></td>
+</tr>
+<tr>
+<td>Password</td>
+<td>:</td>
+<td><input name="mypassword" type="password" id="mypassword"></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td><input type="submit" name="Submit" value="Login"></td>
+</tr>
+</table>
+</td>
+</form>
+</tr>
+</table>
+<center>
+<br>Not yet registered? <a href="registeracc.php"><b>Register Here</b></a>
+<br>Return to <a href="http://www.anu.ac.ke"><b>ANU Home Page</b></a>
+</center>
+</div>
+<div id="footer">
+<div class="bottom_addr">Para más desarrollos accede a <a href="https://www.configuroweb.com/">ConfiguroWeb</a></div>
+</div>
+</div>
+</body></html>
